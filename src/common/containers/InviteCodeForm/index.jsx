@@ -12,7 +12,7 @@ function transformValidationInput(values) {
 
 function mapStateToProps(state, props) {
   return {
-    initialValues: {chapterId: props.chapterId, roles: 'member'},
+    initialValues: {chapterId: props.chapterId, roles: 'learner'},
     isActive: props.isActive,
     onSave: props.onSave,
     onCancel: props.onCancel,

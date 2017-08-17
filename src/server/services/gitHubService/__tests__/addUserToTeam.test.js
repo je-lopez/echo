@@ -15,7 +15,7 @@ describe(testContext(__filename), function () {
       const path = `/teams/${teamId}/memberships/${username}`
       const mockResponse = {
         url: `https://api.github.com${path}`,
-        role: 'member',
+        role: 'learner',
         state: 'active',
       }
       nock(config.server.github.baseURL)

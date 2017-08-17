@@ -1,8 +1,8 @@
-import {ADMIN, MEMBER, STAFF, COACH} from 'src/common/models/user'
+import {ADMIN, LEARNER, STAFF, COACH} from 'src/common/models/user'
 
 const GENERAL_USE = [
   ADMIN,
-  MEMBER,
+  LEARNER,
   STAFF,
   COACH,
 ]
