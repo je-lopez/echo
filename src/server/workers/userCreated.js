@@ -1,7 +1,9 @@
 import config from 'src/config'
-import {addUserToTeam} from 'src/server/services/gitHubService'
 import {logRejection} from 'src/server/util'
-import {Chapter, Member} from 'src/server/services/dataService'
+import {Chapter, Member, Phase} from 'src/server/services/dataService'
+import {LEARNER} from 'src/common/models/user'
+
+const DEFAULT_PHASE_NUMBER = 1
 
 export function start() {
   const jobService = require('src/server/services/jobService')
@@ -21,10 +23,21 @@ export async function processUserCreated(idmUser) {
 
     const chapter = chapters[0]
 
-    await Member.upsert({
+    const newMember = {
       id: idmUser.id,
       chapterId: chapter.id,
-    })
+    }
+
+    if (idmUser.roles.includes(LEARNER)) {
+      const defaultPhase = (await Phase.getAll(DEFAULT_PHASE_NUMBER, {index: 'number'}))[0]
+      if (!defaultPhase) {
+        throw new Error('Phase not found for default numberL', DEFAULT_PHASE_NUMBER)
+      }
+
+      newMember.phaseId = defaultPhase.id
+    }
+
+    await Member.upsert(newMember)
 
     try {
       await _addUserToChapterGitHubTeam(idmUser.handle, chapter.githubTeamId)
@@ -51,6 +64,7 @@ function _notifyCRMSystemOfMemberSignUp(idmUser) {
 }
 
 async function _addUserToChapterGitHubTeam(userHandle, githubTeamId) {
+  const {addUserToTeam} = require('src/server/services/gitHubService')
   console.log(`Adding ${userHandle} to GitHub team ${githubTeamId}`)
   return logRejection(addUserToTeam(userHandle, githubTeamId), 'Error while adding user to chapter GitHub team.')
 }
