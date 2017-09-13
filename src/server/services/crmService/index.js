@@ -1,5 +1,6 @@
 import {default as getContactByEmail} from './getContactByEmail'
 import {default as notifyContactSignedUp} from './notifyContactSignedUp'
+import {default as updateContactProperties} from './updateContactProperties'
 
 /**
  * NOTE: this service's functions are exported the way they are to enable
@@ -9,4 +10,5 @@ import {default as notifyContactSignedUp} from './notifyContactSignedUp'
 export default {
   getContactByEmail,
   notifyContactSignedUp,
+  updateContactProperties,
 }
