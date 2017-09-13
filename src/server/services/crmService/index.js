@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch'
-
 import config from 'src/config'
+import {default as getContactByEmail} from './getContactByEmail'
 
 const properties = {
   echoSignUp: 'signed_up_for_echo',
@@ -19,23 +19,6 @@ const paths = {
 export default {
   getContactByEmail,
   notifyContactSignedUp,
-}
-
-async function getContactByEmail(email) {
-  const url = _crmURL(paths.contactProfileByEmail(encodeURIComponent(email)))
-
-  const resp = await fetch(url, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-    }
-  })
-
-  if (!resp.ok) {
-    throw new Error(`Couldn't get contact by email: ${resp.statusText}`)
-  }
-
-  return resp.json()
 }
 
 async function notifyContactSignedUp(email) {
